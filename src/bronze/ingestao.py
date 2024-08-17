@@ -8,9 +8,12 @@ tableName = dbutils.widgets.get("tablename")
 
 # DBTITLE 1,Gerando Mount
 
+import os
 #config
 account_name = "catalogdatabricksvini"
-account_key = "" #BetVORhrr5D1RNc3AuagQCXpyh+ygUFeFnovjUNSp5iidUh7NUrR6DmUxce5okmDhhPuqFHx08Ws+ASt66si8A= =
+account_key = os.getenv("BLOB_STORAGE_ACCOUNT_KEY")
+#"BetVORhrr5D1RNc3AuagQCXpyh+ygUFeFnovjUNSp5iidUh7NUrR6DmUxce5okmDhhPuqFHx08Ws+ASt66si8A= =" 
+print("Account Key:", account_key)
 container_name = "raw"
 mount_name = f"/mnt/project/raw/{tableName}" 
 
@@ -24,12 +27,12 @@ if any(mount.mountPoint == mount_name for mount in dbutils.fs.mounts()):
     print(f"O ponto de montagem '{mount_name}' já existe. Desmontando...")
     dbutils.fs.unmount(mount_name)
 
-# Montar o Blob Storage
-# dbutils.fs.mount(
-#   source = source_url,
-#   mount_point = mount_name,
-#   extra_configs = {conf_key: account_key}
-# )
+Montar o Blob Storage
+dbutils.fs.mount(
+  source = source_url,
+  mount_point = mount_name,
+  extra_configs = {conf_key: account_key}
+)
 
 
 
