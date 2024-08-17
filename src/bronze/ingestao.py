@@ -1,4 +1,8 @@
 # Databricks notebook source
+
+
+# COMMAND ----------
+
 # DBTITLE 1,Setup
 catalog = "hive_metastore"
 schema = "bronze"
