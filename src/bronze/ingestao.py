@@ -1,8 +1,4 @@
 # Databricks notebook source
-
-
-# COMMAND ----------
-
 # DBTITLE 1,Setup
 catalog = "hive_metastore"
 schema = "bronze"
@@ -29,11 +25,11 @@ if any(mount.mountPoint == mount_name for mount in dbutils.fs.mounts()):
     dbutils.fs.unmount(mount_name)
 
 # Montar o Blob Storage
-dbutils.fs.mount(
-  source = source_url,
-  mount_point = mount_name,
-  extra_configs = {conf_key: account_key}
-)
+# dbutils.fs.mount(
+#   source = source_url,
+#   mount_point = mount_name,
+#   extra_configs = {conf_key: account_key}
+# )
 
 
 
