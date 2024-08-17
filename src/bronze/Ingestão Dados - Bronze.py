@@ -1,6 +1,10 @@
 # Databricks notebook source
 
-
+#config
+account_name = "catalogdatabricksvini"
+account_key = ""
+container_name = "raw"
+mount_name = "/mnt/project/raw" 
 
 #url blob
 source_url = f"wasbs://{container_name}@{account_name}.blob.core.windows.net"
