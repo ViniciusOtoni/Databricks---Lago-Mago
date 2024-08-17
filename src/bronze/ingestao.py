@@ -27,7 +27,7 @@ if any(mount.mountPoint == mount_name for mount in dbutils.fs.mounts()):
     print(f"O ponto de montagem '{mount_name}' já existe. Desmontando...")
     dbutils.fs.unmount(mount_name)
 
-Montar o Blob Storage
+#Montar o Blob Storage
 dbutils.fs.mount(
   source = source_url,
   mount_point = mount_name,
