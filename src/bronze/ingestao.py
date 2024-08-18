@@ -1,4 +1,8 @@
 # Databricks notebook source
+import utils
+
+# COMMAND ----------
+
 # DBTITLE 1,Setup
 catalog = "hive_metastore"
 schema = "bronze"
@@ -15,7 +19,7 @@ account_key = os.getenv("BLOB_STORAGE_ACCOUNT_KEY")
 #"BetVORhrr5D1RNc3AuagQCXpyh+ygUFeFnovjUNSp5iidUh7NUrR6DmUxce5okmDhhPuqFHx08Ws+ASt66si8A= =" 
 print("Account Key:", account_key)
 container_name = "raw"
-mount_name = f"/mnt/project/raw/{tableName}" 
+mount_name = f"/mnt/project/raw/{schema}/full_load/{tableName}" 
 
 #url blob
 source_url = f"wasbs://{container_name}@{account_name}.blob.core.windows.net"
@@ -42,27 +46,56 @@ spark.sql("CREATE DATABASE IF NOT EXISTS bronze")
 
 # COMMAND ----------
 
-# DBTITLE 1,Imports
-def table_exists(catalog, database, table):
-    count = (spark.sql(f"SHOW TABLES FROM {catalog}.{database}")
-             .filter("database = '{database}' AND tableName= '{table}' ")
-             .count())
-    return count == 1
+class Ingestor:
+
+    def __init__(self, catalog, schemaname, tablename, data_format):
+        self.catalog = catalog,
+        self.schemaname = schemaname,
+        self.tablename = tablename,
+        self.format = data_format,
+        self.set_schema()
+        
+
+    def set_schema(self):
+        self.data_schema = utils.importSchema(self.tablename)
+
+    def load(self, path):
+        df = (spark.read
+              .format(self.format)
+              .schema(self.data_schema)
+              .load(path))
+        
+        return df
+
+        
+    def save(self, df):
+        (df.coalesce(1)
+            .write
+            .format('delta')
+            .mode("overwrite")
+            .saveAsTable(f"{self.catalog}.{self.schemaname}.{self.tablename}"))
+    
+    def execute(self, path):
+        df = self.load(path)
+        self.save(df)
+
 
 # COMMAND ----------
 
-if not (table_exists(catalog, schema, tableName)):
-    print("Tabela não existente, criando...")
+if not utils.table_exists(catalog, schema, tableName):
+    print("Tabela não existe, criando...")
 
-    df = spark.read.format('csv').load(f"/mnt/project/raw/{tableName}")
+    ingest_full_load = Ingestor(catalog=catalog,
+                                 schemaname=schema,
+                                 tablename=tableName, 
+                                 data_format='csv')
+    
+    ingest_full_load.execute(f"/mnt/project/raw/{schema}/full_load/{tableName}")
 
-    (df.coalesce(1).
-        write.
-        format('delta').
-        mode("overwrite").
-        saveAsTable(f"{catalog}.{schema}.{tableName}"))
+    print("Tabela criada com sucesso!")
+
 else:
-    print("Tabela já existente, ignorando full load...")
+    print("Tabela já existe, ignorando full-load")
 
 # COMMAND ----------
 
