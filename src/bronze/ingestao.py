@@ -55,12 +55,8 @@ class Ingestor:
         self.catalog = catalog,
         self.schemaname = schemaname,
         self.tablename = tablename,
-        self.format = data_format,
-        self.set_schema()
+        self.format = data_format
         
-
-    def set_schema(self):
-        self.data_schema = utils.importSchema(self.tablename)
 
     def load(self, path):
         df = (spark.read
