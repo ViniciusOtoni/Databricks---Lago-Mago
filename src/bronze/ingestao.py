@@ -51,7 +51,8 @@ spark.sql("CREATE DATABASE IF NOT EXISTS bronze")
 
 class Ingestor:
 
-    def __init__(self, catalog, schemaname, tablename, data_format):
+    def __init__(self, spark, catalog, schemaname, tablename, data_format):
+        self.spark = spark,
         self.catalog = catalog,
         self.schemaname = schemaname,
         self.tablename = tablename,
@@ -59,7 +60,8 @@ class Ingestor:
         
 
     def load(self, path):
-        df = (spark.read
+        df = (self.spark
+              .read
               .format(self.format)
               .schema(self.data_schema)
               .load(path))
@@ -81,10 +83,11 @@ class Ingestor:
 
 # COMMAND ----------
 
-if not utils.table_exists(catalog, schema, tableName):
+if not utils.table_exists(spark, catalog, schema, tableName):
     print("Tabela não existe, criando...")
 
-    ingest_full_load = Ingestor(catalog=catalog,
+    ingest_full_load = Ingestor(spark = spark,
+                                catalog=catalog,
                                  schemaname=schema,
                                  tablename=tableName, 
                                  data_format='csv')
