@@ -1,7 +1,6 @@
 # Databricks notebook source
 import sys
 sys.path.insert(0, "../lib/")
-
 import utils
 import ingestion
 import os
@@ -10,9 +9,9 @@ import os
 # COMMAND ----------
 
 # DBTITLE 1,Setup
-catalog = "hive_metastore"
-schema = "bronze"
-tableName = "house_price" #dbutils.widgets.get("tablename") #"house_price"
+catalog = dbutils.widgets.get("catalog") #"hive_metastore"
+schema = dbutils.widgets.get("schema") #"bronze"
+tableName = dbutils.widgets.get("tablename") #"house_price"
 
 # COMMAND ----------
 
@@ -33,7 +32,7 @@ conf_key = f"fs.azure.account.key.{account_name}.blob.core.windows.net"
 
 # COMMAND ----------
 
-utils.
+utils.create_mount(spark, mount_name, source_url, conf_key, account_key)
 
 # COMMAND ----------
 
