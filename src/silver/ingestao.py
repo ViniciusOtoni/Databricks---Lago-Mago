@@ -9,9 +9,9 @@ def import_query(path):
         return open_file.read()
 
 
-table_name = "informacoes_casas"
+tableName = dbutils.widgets.get("tablename")
 
-query = import_query(f"{table_name}.sql")
+query = import_query(f"{tableName}.sql")
 print(query)
 
 # COMMAND ----------
@@ -20,7 +20,7 @@ print(query)
  .write
  .format('delta')
  .mode("overwrite")
- .saveAsTable(f"hive_metastore.silver.{table_name}"))
+ .saveAsTable(f"hive_metastore.silver.{tableName}"))
 
 # COMMAND ----------
 
