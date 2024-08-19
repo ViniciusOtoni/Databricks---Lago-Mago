@@ -20,6 +20,7 @@ tableName = dbutils.widgets.get("tablename") #"house_price"
 
 account_name = "catalogdatabricksvini"
 account_key = os.getenv("BLOB_STORAGE_ACCOUNT_KEY")
+
 #"BetVORhrr5D1RNc3AuagQCXpyh+ygUFeFnovjUNSp5iidUh7NUrR6DmUxce5okmDhhPuqFHx08Ws+ASt66si8A= =" 
 
 container_name = "raw"
