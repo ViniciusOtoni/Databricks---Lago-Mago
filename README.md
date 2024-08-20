@@ -1,4 +1,4 @@
-#Projeto:
+# Projeto:
 
 Projeto replicando um processo de migração de um banco OLTP (modelo transacional) para um Data Lake utilizando Databricks.
 
