@@ -42,7 +42,7 @@
         "notebook_task": {
           "notebook_path": "src/silver/ingestao",
           "base_parameters": {
-            "tablename": "informacoes_casa"
+            "tablename": "informacoes_casas"
           },
           "source": "GIT"
         },
