@@ -41,10 +41,3 @@ Realizo a criação de duas classes:
 
 Ingestor -> Ingestão full-load dos dados para a camada bronze em Delta table.
 IngestorCubo -> Ingestão das tabelas dimensionais (cubos) para a camada gold.
-
-
-
-
-
-Ingestor -> Ingestão full-load dos dados para a camada bronze em Delta table.
-IngestorCubo -> Ingestão das tabelas dimensionais (cubos) para a camada gold.
